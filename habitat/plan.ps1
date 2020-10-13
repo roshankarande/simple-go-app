@@ -12,7 +12,7 @@ function Invoke-Build {
 
     Push-Location "$PLAN_CONTEXT/.."
     try {
-        go build -o "${pkg_name}"
+        go build . # -o "${pkg_name}.exe"
         if($LASTEXITCODE -ne 0) {
             Write-Error "go build failed!"
         }
@@ -22,6 +22,6 @@ function Invoke-Build {
 }
 
 function Invoke-Install {
-    mkdir -p "${pkg_prefix}/bin"
-    Copy-Item "${SRC_PATH}/${pkg_name}" "${pkg_prefix}/bin" -Force
+    New-Item -Path "${pkg_prefix}/bin" -Force -Type Directory
+    Copy-Item "${SRC_PATH}/${pkg_name}.exe" "${pkg_prefix}/bin" -Force
 }
